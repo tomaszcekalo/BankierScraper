@@ -34,10 +34,11 @@ namespace BankierScraper
             //AngleSharp.Html.Dom.HtmlUrlBaseElement
             ScrapeHotNews(document);
             ScrapeDailyNews(document);
+            ScrapeHomeQuote(document);
             Console.ReadKey();
         }
 
-        public void ScrapeHotNews(IDocument document)
+        public object ScrapeHotNews(IDocument document)
         {
             var cellSelector = "#hotnews-box a";
             var cells = document.QuerySelectorAll(cellSelector);
@@ -47,6 +48,7 @@ namespace BankierScraper
                     x.TextContent,
                     Href = x.GetAttribute("href")
                 });
+            return items;
         }
         public object ScrapeDailyNews(IDocument document)
         {
@@ -57,6 +59,26 @@ namespace BankierScraper
                 {
                     x.QuerySelector(".m-title-with-label-item__title").TextContent,
                     Href = x.GetAttribute("href")
+                });
+            return items;
+        }
+        public object ScrapeHomeQuote(IDocument document)
+        {
+            var cellSelector = "#home-quote-box li";
+            var cells = document.QuerySelectorAll(cellSelector);
+            var items = cells
+                .Select(x => new
+                {
+                    a=x.QuerySelector("a"),
+                    qiValue=x.QuerySelector("span.-value"),
+                    qipercentageChange=x.QuerySelector("span.-percentage-change")
+                })
+                .Select(x => new
+                {
+                    Href=x.a.GetAttribute("href"),
+                    x.a.TextContent,
+                    Value=x.qiValue.TextContent,
+                    PercentageChange=x.qipercentageChange.TextContent
                 });
             return items;
         }
