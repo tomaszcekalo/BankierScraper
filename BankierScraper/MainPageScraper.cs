@@ -10,14 +10,16 @@ namespace BankierScraper
     {
         //HotNews
         //DailyNews
-        //HomeQuote
+        //HomeQuote 
         //QuotationOfTheDay
         //HomeSpecialTopic
-        //HomePBNews
-        //Markets
-        //Finances
-        //Business
-        //Satellites
+        //HomePBNews #home-pb-news-box
+        //Markets #markets-box
+        // #home-link-box
+
+        //Finances #finances-box
+        //Business #business-box
+        //Satellites #home-satellites-box
         //
 
         public async Task Scrape()
@@ -32,13 +34,13 @@ namespace BankierScraper
             var articles = cells.OfType<IUrlUtilities>();
             //AngleSharp.Html.Dom.HtmlAnchorElement;
             //AngleSharp.Html.Dom.HtmlUrlBaseElement
-            ScrapeHotNews(document);
-            ScrapeDailyNews(document);
-            ScrapeHomeQuote(document);
+            ParseHotNews(document);
+            ParseDailyNews(document);
+            ParseHomeQuote(document);
             Console.ReadKey();
         }
 
-        public object ScrapeHotNews(IDocument document)
+        public object ParseHotNews(IDocument document)
         {
             var cellSelector = "#hotnews-box a";
             var cells = document.QuerySelectorAll(cellSelector);
@@ -50,7 +52,7 @@ namespace BankierScraper
                 });
             return items;
         }
-        public object ScrapeDailyNews(IDocument document)
+        public object ParseDailyNews(IDocument document)
         {
             var cellSelector = "#home-dailynews-box .m-title-with-label-item:not(.-orange)";
             var cells = document.QuerySelectorAll(cellSelector);
@@ -62,7 +64,7 @@ namespace BankierScraper
                 });
             return items;
         }
-        public object ScrapeHomeQuote(IDocument document)
+        public object ParseHomeQuote(IDocument document)
         {
             var cellSelector = "#home-quote-box li";
             var cells = document.QuerySelectorAll(cellSelector);
