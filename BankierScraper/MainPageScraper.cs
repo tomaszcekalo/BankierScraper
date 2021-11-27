@@ -10,7 +10,7 @@ namespace BankierScraper
     {
         //HotNews
         //DailyNews
-        //HomeQuote 
+        //HomeQuote
         //QuotationOfTheDay
         //HomeSpecialTopic
         //HomePBNews #home-pb-news-box
@@ -37,7 +37,21 @@ namespace BankierScraper
             ParseHotNews(document);
             ParseDailyNews(document);
             ParseHomeQuote(document);
+            ParsePBNews(document);
             Console.ReadKey();
+        }
+
+        private object ParsePBNews(IDocument document)
+        {
+            var cellSeceltor = "#home-pb-news-box ul.m-home-pb-news-list li.m-home-pb-news-list__item a";
+            var cells = document.QuerySelectorAll(cellSeceltor);
+            var items = cells
+                .Select(x => new
+                {
+                    x.TextContent,
+                    Href = x.GetAttribute("href")
+                });
+            return items;
         }
 
         public object ParseHotNews(IDocument document)
@@ -52,6 +66,7 @@ namespace BankierScraper
                 });
             return items;
         }
+
         public object ParseDailyNews(IDocument document)
         {
             var cellSelector = "#home-dailynews-box .m-title-with-label-item:not(.-orange)";
@@ -64,6 +79,7 @@ namespace BankierScraper
                 });
             return items;
         }
+
         public object ParseHomeQuote(IDocument document)
         {
             var cellSelector = "#home-quote-box li";
@@ -71,16 +87,16 @@ namespace BankierScraper
             var items = cells
                 .Select(x => new
                 {
-                    a=x.QuerySelector("a"),
-                    qiValue=x.QuerySelector("span.-value"),
-                    qipercentageChange=x.QuerySelector("span.-percentage-change")
+                    a = x.QuerySelector("a"),
+                    qiValue = x.QuerySelector("span.-value"),
+                    qipercentageChange = x.QuerySelector("span.-percentage-change")
                 })
                 .Select(x => new
                 {
-                    Href=x.a.GetAttribute("href"),
+                    Href = x.a.GetAttribute("href"),
                     x.a.TextContent,
-                    Value=x.qiValue.TextContent,
-                    PercentageChange=x.qipercentageChange.TextContent
+                    Value = x.qiValue.TextContent,
+                    PercentageChange = x.qipercentageChange.TextContent
                 });
             return items;
         }
