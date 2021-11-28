@@ -38,7 +38,21 @@ namespace BankierScraper
             ParseDailyNews(document);
             ParseHomeQuote(document);
             ParsePBNews(document);
+            ParseMarkets(document);
             Console.ReadKey();
+        }
+
+        private object ParseMarkets(IDocument document)
+        {
+            var cellSeceltor = "#markets-box ul li a";
+            var cells = document.QuerySelectorAll(cellSeceltor);
+            var items = cells
+                .Select(x => new
+                {
+                    x.TextContent,
+                    Href = x.GetAttribute("href")
+                });
+            return items;
         }
 
         private object ParsePBNews(IDocument document)
