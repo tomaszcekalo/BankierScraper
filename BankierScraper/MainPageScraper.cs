@@ -22,7 +22,7 @@ namespace BankierScraper
         //Satellites #home-satellites-box
         //
 
-        public async Task Scrape()
+        public async Task<object> Scrape()
         {
             var config = Configuration.Default.WithDefaultLoader();
             var address = "https://www.bankier.pl/";
@@ -34,12 +34,15 @@ namespace BankierScraper
             var articles = cells.OfType<IUrlUtilities>();
             //AngleSharp.Html.Dom.HtmlAnchorElement;
             //AngleSharp.Html.Dom.HtmlUrlBaseElement
-            ParseHotNews(document);
-            ParseDailyNews(document);
-            ParseHomeQuote(document);
-            ParsePBNews(document);
-            ParseMarkets(document);
-            Console.ReadKey();
+            var result = new object[]
+            {
+                ParseHotNews(document),
+                ParseDailyNews(document),
+                ParseHomeQuote(document),
+                ParsePBNews(document),
+                ParseMarkets(document),
+            };
+            return result;
         }
 
         private object ParseMarkets(IDocument document)

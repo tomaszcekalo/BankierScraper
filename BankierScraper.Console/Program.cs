@@ -1,12 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using Newtonsoft.Json;
+using System.Threading.Tasks;
+using BankierScraper;
+using System;
 
-namespace BankierScraper.Console
-{
-    internal class Program
-    {
-        private static async Task Main(string[] args)
-        {
-            await new MainPageScraper().Scrape();
-        }
-    }
-}
+var result = await new MainPageScraper().Scrape();
+Console.WriteLine(JsonConvert.SerializeObject(result, Formatting.Indented));
